@@ -4,10 +4,7 @@ import Cards from "../components/Cards"
 
 class Employees extends Component{
     state = {
-        image: "",
-        name: "",
-        email: "",
-        phone: ""
+        employees : []
     };
 
     componentDidMount(){
@@ -15,24 +12,35 @@ class Employees extends Component{
     }
 
     loadAll = () => {
-        API.getAllEmployee().then(res =>{
+        API.getAllEmployee().then((res) =>{
             const data = res.data.results;
-            for (let i = 0; i < data.length; i++) {
-                // console.log(data[i])
-            }
-                    
+            console.log(data);
+            this.setState({
+                employees: data
+            }) 
         })
     }
 
+
     render(){
-        // let table = []
-        // for (let i = 0; i < 8; i++) {
-            // table.push(<Cards/>)
-        // }
-                return(
-                    <Cards/>
-                )
+      
+    return(
+        <div>
+           {this.state.employees.map(item => (
+               <Cards
+                image={item.picture.medium}
+                 firstName={item.name.first}
+                 lastName={item.name.last}
+                 email={item.email}
+                 phone={item.cell}
+               />
+
+           ))} 
+        </div>
+        
+    )
     }
 }
+
 
 export default Employees
