@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import API from "../utils/API";
-import Cards from "../components/Cards"
+// import Cards from "../components/Cards"
 
 class Employees extends Component{
     state = {
@@ -9,6 +9,36 @@ class Employees extends Component{
 
     componentDidMount(){
         this.loadAll()
+    }
+
+    handleFirstNameSort = () =>{
+        console.log("click")
+        console.log(this.state.employees)
+        var firstName = this.state.employees
+        firstName.sort((a, b)=>{
+            if(a.name.first<b.name.first){return -1}
+            if(a.name.first>b.name.first){return 1}
+            return 0;
+        })
+        console.log(firstName);
+        this.setState({
+            employees: firstName
+            
+        })
+        console.log(this.state.employees)
+    }
+
+    handleLastNameSort = ()=>{
+        console.log("clicking")
+        var lastName = this.state.employees
+        lastName.sort((a, b)=>{
+            if(a.name.last < b.name.last){return - 1}
+            if(a.name.last > b.name.last){return 1}
+            return 0
+        })
+        this.setState({
+            employees: lastName
+        })
     }
 
     loadAll = () => {
@@ -25,17 +55,37 @@ class Employees extends Component{
     render(){
       
     return(
-        <div>
+        <div className="container">
+               <table>
+                   <tr>
+                       
+                   <th>Image</th>
+                    <th onClick={this.handleFirstNameSort}>First Name</th>
+                   <th onClick={this.handleLastNameSort}>Last Name</th> 
+                   <th>Email</th>
+                   <th>Phone Number</th>
+                   </tr>
            {this.state.employees.map(item => (
-               <Cards
-                image={item.picture.medium}
-                 firstName={item.name.first}
-                 lastName={item.name.last}
-                 email={item.email}
-                 phone={item.cell}
-               />
-
-           ))} 
+               <tr>
+                   <td>
+                       <img src={item.picture.thumbnail}></img>
+                   </td>
+                   <td>
+                       {item.name.first}
+                   </td>
+                   <td>
+                       {item.name.last}
+                   </td>
+                   <td>
+                       {item.email}
+                   </td>
+                   <td>
+                       {item.cell}
+                   </td>
+               </tr>
+               
+               ))} 
+               </table>
         </div>
         
     )
